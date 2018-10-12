@@ -20,9 +20,8 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
                 if (err) throw err;
             });
 
+
             //----------------------------------------------------------------
-
-
             /**
              * soe
              */
@@ -52,17 +51,19 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
 
             // 实例化要请求产品的client对象。clientProfile可选。
             let client = new SoeClient(cred, "ap-guangzhou", clientProfile);
+            const randomSessionId = "stress_test_" + Math.round(Math.random()*1000000);
+            console.log("sessionId: ", randomSessionId); //debug
 
             // 实例化一个请求对象,并填充参数
-            req = new models.InitOralProcessRequest();
-            req.SessionId = "stress_test_956938";
-            req.RefText = "again";
-            req.WorkMode = 0;
-            req.EvalMode = 0;
-            req.ScoreCoeff = 3.5;
+            let req1 = new models.InitOralProcessRequest();
+            req1.SessionId = randomSessionId;
+            req1.RefText = "Everyday is new";
+            req1.WorkMode = 1;//语音输入模式，0: 流式分片，1：非流式一次性评估
+            req1.EvalMode = 1;//评估模式，0：词模式，1：句子模式
+            req1.ScoreCoeff = 2.5;//评价苛刻指数，1.0为最小年龄段，4.0为最高年龄段
 
-            // 通过client对象调用想要访问的接口，需要传入请求对象以及响应回调函数
-            client.InitOralProcess(req, function (err, response) {
+            // 通过client对象调用发音评估初始化接口，需要传入请求对象以及响应回调函数
+            client.InitOralProcess(req1, function (err, response) {
                 if (err) {
                     console.log(err);
                     return;
@@ -71,30 +72,29 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
                 console.log(response.to_json_string());
 
                 // 实例化一个请求对象,并填充参数
-                req = new models.TransmitOralProcessRequest();
-                req.SessionId = "stress_test_956938";
-                req.VoiceFileType = 1;
-                req.SeqId = 0;
-                req.VoiceEncodeType = 1;
-                req.IsEnd = 0;
-                req.UserVoiceData = base64;
+                let req2 = new models.TransmitOralProcessRequest();
+                req2.SessionId = randomSessionId;
+                req2.VoiceFileType = 3;//语音文件类型，1：raw，2：wav，3：mp3（16k采样率16bit编码单声道）
+                req2.SeqId = 1; //流模式数据包序号，从1开始，非流模式无意义
+                req2.VoiceEncodeType = 1;//语音编码类型，1：pcm
+                req2.IsEnd = 1; //传输完毕标志，0：未完毕，1：传输完毕开始评估，非流模式无意义
+                req2.UserVoiceData = base64; //base64格式编码数据包，流模式下大小可以按需设置，但必须>=4K
 
-                // 通过client对象调用想要访问的接口，需要传入请求对象以及响应回调函数
-                client.TransmitOralProcess(req, function (err, response) {
+                // 通过client对象调用发音数据传输接口，需要传入请求对象以及响应回调函数
+                client.TransmitOralProcess(req2, function (err, response) {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     // 请求正常返回，打印response对象
                     console.log(response.to_json_string());
+                    res.json(response);
                 });
             });
 
             //----------------------------------------------------------------
         }
     });
-
-    res.json({test: 'ok!'});
 });
 
 module.exports = router;
