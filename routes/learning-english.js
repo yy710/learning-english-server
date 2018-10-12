@@ -54,15 +54,15 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
             let client = new SoeClient(cred, "ap-guangzhou", clientProfile);
 
             // 实例化一个请求对象,并填充参数
-            req = new models.InitOralProcessRequest();
-            req.SessionId = "stress_test_956938";
-            req.RefText = "again";
-            req.WorkMode = 0;
-            req.EvalMode = 0;
-            req.ScoreCoeff = 3.5;
+            let req1 = new models.InitOralProcessRequest();
+            req1.SessionId = "stress_test_956951";
+            req1.RefText = "record";
+            req1.WorkMode = 1;
+            req1.EvalMode = 0;
+            req1.ScoreCoeff = 3.5;
 
             // 通过client对象调用想要访问的接口，需要传入请求对象以及响应回调函数
-            client.InitOralProcess(req, function (err, response) {
+            client.InitOralProcess(req1, function (err, response) {
                 if (err) {
                     console.log(err);
                     return;
@@ -71,16 +71,16 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
                 console.log(response.to_json_string());
 
                 // 实例化一个请求对象,并填充参数
-                req = new models.TransmitOralProcessRequest();
-                req.SessionId = "stress_test_956938";
-                req.VoiceFileType = 1;
-                req.SeqId = 0;
-                req.VoiceEncodeType = 1;
-                req.IsEnd = 0;
-                req.UserVoiceData = base64;
+                let req2 = new models.TransmitOralProcessRequest();
+                req2.SessionId = "stress_test_956951";
+                req2.VoiceFileType = 1;
+                req2.SeqId = 0;
+                req2.VoiceEncodeType = 1;
+                req2.IsEnd = 0;
+                req2.UserVoiceData = base64;
 
                 // 通过client对象调用想要访问的接口，需要传入请求对象以及响应回调函数
-                client.TransmitOralProcess(req, function (err, response) {
+                client.TransmitOralProcess(req2, function (err, response) {
                     if (err) {
                         console.log(err);
                         return;
