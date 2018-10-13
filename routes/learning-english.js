@@ -18,10 +18,10 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
             let buf = Buffer.from(data);
             let base64 = buf.toString('base64');
 
-            soe.init("Dinosaurs Before Dark")
-                .then(() => soe.transmit(base64))
+            soe("Dinosaurs Before Dark", base64)
                 .then(r => res.json(r))
-                .catch(console.log(err));
+                .catch(log);
+
             /**
              * test
              */
@@ -34,12 +34,9 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
     });
 });
 
-
-function soe1(base64Data, refText) {
-    return new Promise(function (resolve, reject) {
-
-
-    })
+function log(data) {
+    console.log(data);
+    Promise.resolve(data);
 }
 
 module.exports = router;
