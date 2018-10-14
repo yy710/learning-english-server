@@ -12,7 +12,8 @@ const ClientProfile = tencentcloud.common.ClientProfile;
 const HttpProfile = tencentcloud.common.HttpProfile;
 
 // 实例化一个认证对象，入参需要传入腾讯云账户secretId，secretKey
-let cred = new Credential("AKIDHUXQ8fUCE8sRp2NtZ4NWWLzRnz2uo7Sc", "75sUvAE6nJdopeIm5C8tTsAMNDsOjtvr");
+const credData = require("./ssl/soe-cred.js");
+let cred = new Credential(credData[0], credData[1]);
 
 // 实例化一个http选项，可选的，没有特殊需求可以跳过。
 let httpProfile = new HttpProfile();
