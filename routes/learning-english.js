@@ -5,6 +5,8 @@ let upload = multer({dest: '../uploads/'});
 let fs = require('fs');
 let soe = require("../soe.js");
 
+router.use(express.static('../public'));
+
 /* GET home page. */
 router.post('/upload', upload.single('record'), function (req, res, next) {
     //debug

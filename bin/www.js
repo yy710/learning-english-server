@@ -16,8 +16,9 @@ const httpsPort = 443;
  */
 const options = {
     key: fs.readFileSync('../ssl/www.all2key.cn.key'),
+    // It will being cause to weapp not connect to https server when direct use crt file
     //ca: [fs.readFileSync('./ca/ca.crt')],
-    cert: fs.readFileSync('../ssl/www.all2key.cn.crt')
+    cert: fs.readFileSync('../ssl/www.all2key.cn.pem')
 };
 
 let httpsServer = https.createServer(options, app);
