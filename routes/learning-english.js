@@ -4,8 +4,22 @@ let multer = require('multer');
 let upload = multer({dest: '../uploads/'});
 let fs = require('fs');
 let soe = require("../soe.js");
+const session = require('wafer-node-session');
+let MongoDBStore = require('../mongodb-session/index.js')(session);
 
 router.use(express.static('../public'));
+router.use(function (req, res, next) {
+    session({
+        // 小程序 appId
+        appId: weappConfig.appid,
+        // 小程序 appSecret
+        appSecret: weappConfig.appsecret,
+        // 登录地址
+        loginPath: '/login',
+        // 会话存储
+        store: new MongoDBStore({db: req.data.db, collection: 'learning_english_sessions'})
+    })(req, res, next);
+});
 
 /* GET home page. */
 router.post('/upload', upload.single('record'), function (req, res, next) {
