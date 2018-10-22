@@ -25,7 +25,7 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
                 .catch(log);
 
             /**
-             * test
+             * write base64 to the file 'voice.txt'
              */
             /*
             fs.writeFile(req.file.destination + 'voice.txt', base64, err => {
@@ -38,7 +38,7 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
 
 function log(data) {
     console.log(data);
-    Promise.resolve(data);
+    return Promise.resolve(data);
 }
 
 module.exports = router;
