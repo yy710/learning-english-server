@@ -7,7 +7,13 @@ let soe = require("../soe.js");
 const session = require('wafer-node-session');
 let MongoDBStore = require('../mongodb-ssesion.js')(session);
 const weappConfig = require('../ssl/config.js').learningEnglish;
+//console.log(weappConfig);
 
+router.use('/', (req, res, next) => {
+    //console.log("ok!", req.data);
+    //res.json({errmsg: "ok!"});
+    next();
+});
 router.use(express.static('../public'));
 router.use(function (req, res, next) {
     session({

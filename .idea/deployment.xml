@@ -5,11 +5,19 @@
       <paths name="tencentyun">
         <serverdata>
           <mappings>
-            <mapping deploy="/nodejs/learning-english" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/node_modules" />
           </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="xsxjAliyun">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$/node_modules" web="/" />
+          </mappings>
         </serverdata>
       </paths>
     </serverData>

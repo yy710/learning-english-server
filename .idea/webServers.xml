@@ -3,9 +3,9 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="94647378-8f84-4b03-b0c9-b2fd0fbdb57d" name="tencentyun" url="http://193.112.42.184">
-        <fileTransfer host="193.112.42.184" port="21">
+        <fileTransfer host="193.112.42.184" port="21" rootFolder="/nodejs/learning-english">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" />
           </advancedOptions>
           <option name="port" value="21" />
         </fileTransfer>

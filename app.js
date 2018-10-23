@@ -21,6 +21,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+const dbUrl = require('./ssl/config.js').learningEnglish.dbUrl;
+// debug
+console.log("dbUrl: ", dbUrl);
+app.use('/learning-english', initDb(dbUrl), learningEnglishRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));
@@ -36,9 +41,6 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-
-const dbUrl = require('./ssl/config.js').learningEnglish.dbUrl;
-app.use('/learning-english', initDb(dbUrl), learningEnglishRouter);
 
 
 
@@ -58,7 +60,7 @@ function initDb(dbUrl) {
                 throw e;
             }
             if (!req.data) req.data = {};
-            req.data.db = client.db();
+            req.data.db = client.db("learning_english");
             next();
         });
 
