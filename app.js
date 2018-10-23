@@ -7,7 +7,6 @@ let learningEnglishRouter = require('./routes/learning-english.js');
 let indexRouter = require('./routes/index.js');
 let usersRouter = require('./routes/users.js');
 let app = express();
-var mongodb = require('mongodb');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +20,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/learning-english', learningEnglishRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -39,21 +37,28 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
+const dbUrl = require('./ssl/config.js').learningEnglish.dbUrl;
+app.use('/learning-english', initDb(dbUrl), learningEnglishRouter);
+
+
 
 /**
  * middleware for mongodb
  * @param dbUrl
- * @returns {Function}
+ * @returns {Function} req.data.db
  */
 function initDb(dbUrl) {
+    const MongoClient = require('mongodb').MongoClient;
+    //const client = new MongoClient(dbUrl);
     return function (req, res, next) {
-        mongodb.MongoClient.connect(dbUrl, function (error, client) {
+        // static method
+        MongoClient.connect(dbUrl, function (error, client) {
             if (error) {
                 let e = new Error('Error connecting to db: ' + error.message);
                 throw e;
             }
-            req.db = client.db;//deprecated
-            req.data.db = req.db;//approve
+            if (!req.data) req.data = {};
+            req.data.db = client.db();
             next();
         });
 

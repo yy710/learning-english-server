@@ -5,15 +5,16 @@ let upload = multer({dest: '../uploads/'});
 let fs = require('fs');
 let soe = require("../soe.js");
 const session = require('wafer-node-session');
-let MongoDBStore = require('../mongodb-session/index.js')(session);
+let MongoDBStore = require('../mongodb-ssesion.js')(session);
+const weappConfig = require('../ssl/config.js').learningEnglish;
 
 router.use(express.static('../public'));
 router.use(function (req, res, next) {
     session({
         // 小程序 appId
-        appId: weappConfig.appid,
+        appId: weappConfig.appId,
         // 小程序 appSecret
-        appSecret: weappConfig.appsecret,
+        appSecret: weappConfig.appSecret,
         // 登录地址
         loginPath: '/login',
         // 会话存储
