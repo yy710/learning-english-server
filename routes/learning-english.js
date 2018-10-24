@@ -14,7 +14,7 @@ router.use('/', (req, res, next) => {
     //res.json({errmsg: "ok!"});
     next();
 });
-router.use(express.static('../public'));
+//router.use(express.static('../public'));
 router.use(function (req, res, next) {
     session({
         // 小程序 appId
@@ -28,7 +28,10 @@ router.use(function (req, res, next) {
     })(req, res, next);
 });
 
-/* GET home page. */
+
+/**
+ * send audio that upload to tencent for soe
+ */
 router.post('/upload', upload.single('record'), function (req, res, next) {
     //debug
     console.log("req.file: ", req.file);
