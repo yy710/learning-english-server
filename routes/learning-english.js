@@ -44,7 +44,7 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
             let buf = Buffer.from(data);
             let base64 = buf.toString('base64');
 
-            soe("Dinosaurs Before Dark", base64)
+            soe("“Help! A monster!” said Annie.“Yeah, sure,” said Jack. “A real monster in Frog Creek, Pennsylvania.”", base64)
                 .then(r => res.json(r))
                 .catch(log);
 
