@@ -8,15 +8,17 @@ const session = require('wafer-node-session');
 let MongoDBStore = require('../mongodb-ssesion.js')(session);
 const weappConfig = require('../ssl/config.js').learningEnglish;
 //console.log(weappConfig);
-
+/*
 router.use('/', (req, res, next) => {
     //console.log("ok!", req.data);
-    //res.json({errmsg: "ok!"});
-    next();
+    res.json({errmsg: "ok!"});
+    //next();
 });
+*/
+
 //router.use(express.static('../public'));
+/*
 router.use(function (req, res, next) {
-    /*
     session({
         // 小程序 appId
         appId: weappConfig.appId,
@@ -27,11 +29,11 @@ router.use(function (req, res, next) {
         // 会话存储
         store: new MongoDBStore({db: req.data.db, collection: 'learning_english_sessions'})
     })(req, res, next);
-    */
 });
+*/
 
-router.get('/login', (req, res, next)=>{
-    res.json({msg: "ok!"});
+router.use('/login', (req, res, next) => {
+    res.json({msg: "ok!", sid: "test sid ok!"});
 });
 
 
