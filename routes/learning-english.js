@@ -16,6 +16,7 @@ router.use('/', (req, res, next) => {
 });
 //router.use(express.static('../public'));
 router.use(function (req, res, next) {
+    /*
     session({
         // 小程序 appId
         appId: weappConfig.appId,
@@ -26,6 +27,11 @@ router.use(function (req, res, next) {
         // 会话存储
         store: new MongoDBStore({db: req.data.db, collection: 'learning_english_sessions'})
     })(req, res, next);
+    */
+});
+
+router.get('/login', (req, res, next)=>{
+    res.json({msg: "ok!"});
 });
 
 
