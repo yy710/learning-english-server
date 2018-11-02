@@ -4,17 +4,16 @@ let multer = require('multer');
 let upload = multer({dest: '../uploads/'});
 let fs = require('fs');
 let soe = require("../soe.js");
-const session = require('wafer-node-session');
-let MongoDBStore = require('../mongodb-ssesion.js')(session);
-const weappConfig = require('../ssl/config.js').learningEnglish;
+//const session = require('wafer-node-session');
+//let MongoDBStore = require('../mongodb-ssesion.js')(session);
+//const weappConfig = require('../ssl/config.js').learningEnglish;
 //console.log(weappConfig);
-/*
-router.use('/', (req, res, next) => {
-    //console.log("ok!", req.data);
+
+router.get('/', (req, res, next) => {
+    console.log("router / ", req.query);
     res.json({errmsg: "ok!"});
-    //next();
 });
-*/
+
 
 //router.use(express.static('../public'));
 /*
@@ -32,7 +31,7 @@ router.use(function (req, res, next) {
 });
 */
 
-router.use('/login', (req, res, next) => {
+router.get('/login', (req, res, next) => {
     res.json({msg: "ok!", sid: "test sid ok!"});
 });
 
@@ -72,5 +71,6 @@ function log(data) {
     console.log(data);
     return Promise.resolve(data);
 }
+
 
 module.exports = router;

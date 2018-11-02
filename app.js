@@ -15,8 +15,15 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function (req, res, next) {
+    req.data = {};
+    req.data.query = req.query.data ? JSON.parse(req.query.data) : req.query;
+    console.log("req.data.query: ", req.data.query);
+    next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
