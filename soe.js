@@ -42,6 +42,10 @@ let soe = function (refText, base64Data) {
         reqInit.WorkMode = 1; //语音输入模式，0流式分片，1非流式一次性评估
         reqInit.EvalMode = 1; //评估模式，0:词模式, 1:句子模式，当为词模式评估时，能够提供每个音节的评估信息，当为句子模式时，能够提供完整度和流利度信息。
         reqInit.ScoreCoeff = 3.5; //评价苛刻指数，取值为[1.0 - 4.0]范围内的浮点数，用于平滑不同年龄段的分数，1.0为小年龄段，4.0为最高年龄段
+        //String 业务应用ID，与账号应用APPID无关，是用来方便客户管理服务的参数，需要结合控制台使用
+        //reqInit.SoeAppId =
+        //integer 长效session标识，当该参数为1时，session的持续时间为300s，但会一定程度上影响第一个数据包的返回速度，且TransmitOralProcess必须同时为1才可生效
+        //reqInit.IsLongLifeSession =
 
         // 通过client对象调用想要访问的接口，需要传入请求对象以及响应回调函数
         client.InitOralProcess(reqInit, function (err, response) {
@@ -57,8 +61,12 @@ let soe = function (refText, base64Data) {
             reqTran.VoiceFileType = 3; //语音文件类型 1:raw, 2:wav, 3:mp3(mp3格式目前仅支持16k采样率16bit编码单声道)
             reqTran.SeqId = 1; //流式数据包的序号，从1开始，当IsEnd字段为1后后续序号无意义，非流式模式下无意义
             reqTran.VoiceEncodeType = 1; //语音编码类型 1:pcm
-            reqTran.IsEnd = 0; //是否传输完毕标志，若为0表示未完毕，若为1则传输完毕开始评估，非流式模式下无意义
-            reqTran.UserVoiceData = base64Data; //当前数据包数据, 流式模式下数据包大小可以按需设置，数据包大小必须 >= 4K，编码格式要求为BASE64。
+            reqTran.IsEnd = 1; //是否传输完毕标志，若为0表示未完毕，若为1则传输完毕开始评估，非流式模式下无意义
+            reqTran.UserVoiceData = base64Data; //当前数据包数据, 流式模式下数据包大小可以按需设置，数据包大小必须 >= 4K，编码格式要求为BASE64
+            //String 业务应用ID，与账号应用APPID无关，是用来方便客户管理服务的参数，需要结合控制台使用
+            //reqInit.SoeAppId =
+            //integer 长效session标识，当该参数为1时，session的持续时间为300s，但会一定程度上影响第一个数据包的返回速度。当InitOralProcess接口调用时此项为1时，此项必填1才可生效
+            //regTran.IsLongLifeSession =
 
             // 通过client对象调用想要访问的接口，需要传入请求对象以及响应回调函数
             client.TransmitOralProcess(reqTran, function (err, response) {
@@ -66,7 +74,7 @@ let soe = function (refText, base64Data) {
                     reject(err);
                 }
                 // 请求正常返回，打印response对象
-                console.log(response.to_json_string());
+                console.log(JSON.stringify(response, null, 4));
                 resolve(response);
             });
         });

@@ -52,25 +52,28 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
             let buf = Buffer.from(data);
             let base64 = buf.toString('base64');
 
-            soe("Help A monster", base64)
+            soe("'Help! A monster!' said Annie. 'Yeah, sure,' said Jack. 'A real monster in Frog Creek, Pennsylvania'", base64)
                 .then(r => res.json(r))
-                .catch(log);
+                .catch(log("catch soe error: "));
 
             /**
              * write base64 to the file 'voice.txt'
              */
-            /*
+            /*-------------------------------------------------------------------
             fs.writeFile(req.file.destination + 'voice.txt', base64, err => {
                 if (err) throw err;
+                res.json({errmsg: 'upload ok!'});
             });
-            */
+            --------------------------------------------------------------------*/
         }
     });
 });
 
-function log(data) {
-    console.log(data);
-    return Promise.resolve(data);
+function log(msg) {
+    return function(data){
+        console.log(msg, data);
+        return Promise.resolve(data);
+    };
 }
 
 
