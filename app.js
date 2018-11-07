@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
     req.data = {};
+    req.data.session = {};
     console.log("req.query: ", req.query);
     //req.data.query = JSON.parse(req.query);
     //console.log("req.data.query: ", req.data.query);

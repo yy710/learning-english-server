@@ -4,6 +4,8 @@ let multer = require('multer');
 let upload = multer({dest: '../uploads/'});
 let fs = require('fs');
 let soe = require("../soe.js");
+const session = require('../session.js');
+const config = require('../ssl/config.js');
 //const session = require('wafer-node-session');
 //let MongoDBStore = require('../mongodb-ssesion.js')(session);
 //const weappConfig = require('../ssl/config.js').learningEnglish;
@@ -32,9 +34,12 @@ router.use(function (req, res, next) {
 });
 */
 
-router.get('/login', (req, res, next) => {
-    res.json({msg: "ok!", sid: "test sid ok!"});
-});
+router.get(
+    '/login',
+    session.code2Session(config.learningEnglish.appId, config.learningEnglish.appSecret),
+    session.save,
+    session.reply
+);
 
 
 /**
@@ -70,7 +75,7 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
 });
 
 function log(msg) {
-    return function(data){
+    return function (data) {
         console.log(msg, data);
         return Promise.resolve(data);
     };
