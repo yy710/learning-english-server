@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
 });
 
 
-//router.use(express.static('../public'));
+router.use(express.static('../public'));
 /*
 router.use(function (req, res, next) {
     session({
@@ -57,8 +57,8 @@ router.post('/upload', upload.single('record'), function (req, res, next) {
             let buf = Buffer.from(data);
             let base64 = buf.toString('base64');
 
-            soe("'Help! A monster!' said Annie. 'Yeah, sure,' said Jack. 'A real monster in Frog Creek, Pennsylvania'", base64)
-                .then(r => res.json(r))
+            soe("Help A monster said Annie Yeah sure said Jack A real monster in Frog Creek Pennsylvania", base64)
+                .then(data=>res.json(data))
                 .catch(log("catch soe error: "));
 
             /**

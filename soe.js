@@ -53,7 +53,7 @@ let soe = function (refText, base64Data) {
                 reject(err);
             }
             // 请求正常返回，打印response对象
-            console.log(response.to_json_string());
+            console.log("InitOralProcess: ", response);
 
             // 实例化一个发音数据传输接口请求对象,并填充参数
             let reqTran = new models.TransmitOralProcessRequest();
@@ -74,7 +74,8 @@ let soe = function (refText, base64Data) {
                     reject(err);
                 }
                 // 请求正常返回，打印response对象
-                console.log(JSON.stringify(response, null, 4));
+                //console.log("TransmitOralProcess: ", JSON.stringify(response, null, 4));
+                console.log("TransmitOralProcess: ", response);
                 resolve(response);
             });
         });
