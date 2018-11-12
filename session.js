@@ -19,6 +19,7 @@ let BufferHelper = require('./bufferhelper.js');
 session.code2Session = function (appid, appsecret) {
     return function (req, res, next) {
         const code = req.query.code;
+        if(!code)return;
         const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appsecret}&js_code=${code}&grant_type=authorization_code`;
         httpsGet(url)
             .then(log("code2Session() return: "))

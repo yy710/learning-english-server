@@ -3,10 +3,11 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
-let learningEnglishRouter = require('./routes/learning-english.js');
 let indexRouter = require('./routes/index.js');
 let usersRouter = require('./routes/users.js');
 let app = express();
+const config = require('./ssl/config.js');
+const MongoClient = require('mongodb').MongoClient;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,10 +31,12 @@ app.use(function (req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-const dbUrl = require('./ssl/config.js').learningEnglish.dbUrl;
-// debug
-console.log("dbUrl: ", dbUrl);
-app.use('/learning-english', initDb(dbUrl), learningEnglishRouter);
+const learningEnglishRouter = require('./routes/learning-english.js');
+app.use(
+    '/learning-english',
+    initDb(config.learningEnglish.dbUrl),
+    learningEnglishRouter(express)
+);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -52,15 +55,12 @@ app.use(function (err, req, res, next) {
 });
 
 
-
 /**
  * middleware for mongodb
  * @param dbUrl
  * @returns {Function} req.data.db
  */
 function initDb(dbUrl) {
-    const MongoClient = require('mongodb').MongoClient;
-    //const client = new MongoClient(dbUrl);
     return function (req, res, next) {
         // static method
         MongoClient.connect(dbUrl, function (error, client) {
@@ -68,22 +68,10 @@ function initDb(dbUrl) {
                 let e = new Error('Error connecting to db: ' + error.message);
                 throw e;
             }
-            if (!req.data) req.data = {};
+            //if (!req.data) req.data = {};
             req.data.db = client.db("learning_english");
             next();
         });
-
-        /**
-         * old middware
-         */
-        /*
-        MongoClient.connect(dbUrl, function (err, db) {
-            assert.equal(null, err);
-            req.db = db;//deprecated
-            req.data.db = db;//approve
-            next();
-        });
-        */
     };
 }
 
