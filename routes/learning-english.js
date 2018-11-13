@@ -3,51 +3,27 @@ let upload = multer({dest: '../uploads/'});
 let fs = require('fs');
 let soe = require("../soe.js");
 const session = require('../session.js');
-const config = require('../ssl/config.js');
 //const session = require('wafer-node-session');
 //let MongoDBStore = require('../mongodb-ssesion.js')(session);
 //const weappConfig = require('../ssl/config.js').learningEnglish;
 //console.log(weappConfig);
 
 
-module.exports = function(express) {
+module.exports = function (express) {
+
     const router = express.Router();
-
     router.use(express.static('../public'));
-
-    router.use(function (req, res, next) {
-        console.log("req.get('sid'): ", req.get('sid'));
-        next();
-    });
-
+    router.use(session.find);
     router.get('/', (req, res, next) => {
-        console.log("router / ", req.query);
-        res.json({errmsg: "ok!"});
+        res.json({msg: "request ok!"});
+        //res.render('learning-english', {title: '学英语的鱼'});
     });
-
-    /*
-    router.use(function (req, res, next) {
-        session({
-            // 小程序 appId
-            appId: weappConfig.appId,
-            // 小程序 appSecret
-            appSecret: weappConfig.appSecret,
-            // 登录地址
-            loginPath: '/login',
-            // 会话存储
-            store: new MongoDBStore({db: req.data.db, collection: 'learning_english_sessions'})
-        })(req, res, next);
-    });
-    */
-
     router.get(
         '/login',
-        session.code2Session(config.learningEnglish.appId, config.learningEnglish.appSecret),
+        session.code2Session("learningEnglish"),
         session.save,
         session.reply
     );
-
-
     /**
      * send audio that upload to tencent for soe
      */
@@ -79,7 +55,6 @@ module.exports = function(express) {
             }
         });
     });
-
     return router;
 };
 

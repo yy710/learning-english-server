@@ -22,7 +22,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(function (req, res, next) {
     req.data = {};
     req.data.session = {};
-    console.log("req.query: ", req.query);
+    req.data.config = config;
+    //console.log("req.query: ", req.query);
     //req.data.query = JSON.parse(req.query);
     //console.log("req.data.query: ", req.data.query);
     next();

@@ -10,17 +10,26 @@ let https = require('https');
 let WXBizDataCrypt = require('./WXBizDataCrypt.js');
 let BufferHelper = require('./bufferhelper.js');
 
+class Session{
+    constructor(db, appId, appSecret, col='sessions'){
+        this.col = db.collection(col);
+        this.appId = appId;
+        this.appSecret = appSecret;
+    }
+}
+
 /**
  * 获得 openid 及 session_key
  * @returns {Function}
  * @param appid
  * @param appsecret
  */
-session.code2Session = function (appid, appsecret) {
+session.code2Session = function (configName) {
     return function (req, res, next) {
         const code = req.query.code;
-        if(!code)return;
-        const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appsecret}&js_code=${code}&grant_type=authorization_code`;
+        const config = req.data.config[configName];
+        if(!code)throw "no request code!";
+        const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${config.appId}&secret=${config.appSecret}&js_code=${code}&grant_type=authorization_code`;
         httpsGet(url)
             .then(log("code2Session() return: "))
             .then(_res => {
@@ -32,7 +41,7 @@ session.code2Session = function (appid, appsecret) {
                 //_res.encryptedData = req.query.encryptedData;
                 //_res.iv = req.query.iv;
                 next();
-            }).catch(console.log);
+            }).catch(log("hhtpsGet catch error: "));
     };
 };
 
@@ -55,22 +64,22 @@ session.decryptUserData = function (appid) {
 session.save = function (req, res, next) {
     //delete req.session.encryptedData;
     const db = req.data.db;
+    const s = req.data.session;
     db.collection('sessions')
-        .insertOne(req.data.session, function (err, res) {
+        .findOneAndReplace({openid: s.openid}, s, {upsert: true}, function (err, res) {
             assert.equal(null, err);
-            assert.equal(1, res.insertedCount);
             next();
         });
 };
 
 session.find = function (req, res, next) {
-    const sid = req.query.sid;
+    const sid = req.get('sid');
     const db = req.data.db;
     db.collection('sessions').find({sid: sid}).limit(1).next(function (err, doc) {
         assert.equal(null, err);
-        //console.log("from session.js/session.find(): ", doc);
-        //res.send({valid: !!doc});
-        req.data.session = doc;//approve
+        //delete doc._id;
+        req.data.session = doc || {};
+        console.log("req.data.session ", doc);
         next();
     });
 };
