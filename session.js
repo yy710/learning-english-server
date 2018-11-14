@@ -4,100 +4,109 @@
 'use strict';
 
 const crypto = require('crypto');
-let session = {db: null, col: 'sessions'};
+//let session = {db: null, col: 'sessions'};
 let assert = require('assert');
 let https = require('https');
 let WXBizDataCrypt = require('./WXBizDataCrypt.js');
 let BufferHelper = require('./bufferhelper.js');
 
-class Session{
-    constructor(db, appId, appSecret, col='sessions'){
-        this.col = db.collection(col);
-        this.appId = appId;
-        this.appSecret = appSecret;
-    }
-}
+let session = {
+    col: {},
+    config: {},
 
-/**
- * 获得 openid 及 session_key
- * @returns {Function}
- * @param appid
- * @param appsecret
- */
-session.code2Session = function (configName) {
-    return function (req, res, next) {
+    init: (req, res, next) => {
+        this.col = req.data.db.collection('sessions');
+        this.config = {aaa: 123}; //req.data.config['learningEnglish'];
+        req.data.s = this;
+        next();
+    },
+
+    login: (req, res, next) => {
         const code = req.query.code;
-        const config = req.data.config[configName];
-        if(!code)throw "no request code!";
-        const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${config.appId}&secret=${config.appSecret}&js_code=${code}&grant_type=authorization_code`;
-        httpsGet(url)
-            .then(log("code2Session() return: "))
-            .then(_res => {
+        if (code && this.config.appId && this.config.appSecret) {
+            this._code2Session(this.config.appId, this.config.appSecret, code).then(r => {
                 let s = req.data.session;
-                s.openid = _res.openid;
-                s.session_key = _res.session_key;
+                s.openid = r.openid;
+                s.session_key = r.session_key;
                 s.sid = createSid();
                 req.data.session = s;
                 //_res.encryptedData = req.query.encryptedData;
                 //_res.iv = req.query.iv;
                 next();
-            }).catch(log("hhtpsGet catch error: "));
-    };
-};
+            })
+        } else {
+            res.json({sid: null, msg: "session fail！"});
+        }
+    },
 
-/**
- * 解密用户数据
- * @param req
- * @param res
- * @param next
- */
-session.decryptUserData = function (appid) {
-    return function (req, res, next) {
+    /**
+     * save req.data.session to collection
+     * @param collection
+     * @returns {Function}
+     */
+    save: (req, res, next) => {
+        const data = req.data.session;
+        this.col.findOneAndReplace({openid: data.openid}, data, {upsert: true})
+            .then(next)
+            .catch(log("dataBase error: "));
+    },
+
+    /**
+     * find session from req.data.collection
+     * @returns {Function}
+     */
+    find: (req, res, next) => {
+        const sid = req.get('sid');
+        this.col.find({sid: sid}).limit(1).next(function (err, doc) {
+            assert.equal(null, err);
+            if (doc) {
+                delete doc._id;
+                req.data.session = doc;
+            } else {
+                req.data.session = {};
+            }
+            console.log("set req.data.session =  ", req.data.session);
+            next();
+        });
+    },
+
+    reply: (req, res, next) => {
+        res.json({sid: req.data.session.sid, msg: "session ok!"});
+    },
+
+
+    /**
+     * 获得 openid 及 session_key
+     * @param appid
+     * @param appsecret
+     * @param code
+     * @returns {Promise<T | never>}
+     * @private
+     */
+    _code2Session: function (appid, appsecret, code) {
+        const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${appsecret}&js_code=${code}&grant_type=authorization_code`;
+        return httpsGet(url).then(log("session.code2Session() return: ")).catch(log("httpsGet catch error: "));
+    },
+
+
+    /**
+     * 解密用户数据
+     * @param appName
+     * @param req.data.config
+     * @param req.data.session.session_key
+     * @param req.data.session.iv
+     * @param next
+     * @return req.data.session
+     */
+    decryptUserData: (req, res, next) => {
         const s = req.data.session;
-        const pc = new WXBizDataCrypt(appid, s.session_key);
+        const pc = new WXBizDataCrypt(this.config.appId, s.session_key);
         s.decryptedData = pc.decryptData(s.encryptedData, s.iv);
         req.data.session = s;
         next();
-    };
+    },
 };
 
-session.save = function (req, res, next) {
-    //delete req.session.encryptedData;
-    const db = req.data.db;
-    const s = req.data.session;
-    db.collection('sessions')
-        .findOneAndReplace({openid: s.openid}, s, {upsert: true}, function (err, res) {
-            assert.equal(null, err);
-            next();
-        });
-};
-
-session.find = function (req, res, next) {
-    const sid = req.get('sid');
-    const db = req.data.db;
-    db.collection('sessions').find({sid: sid}).limit(1).next(function (err, doc) {
-        assert.equal(null, err);
-        //delete doc._id;
-        req.data.session = doc || {};
-        console.log("req.data.session ", doc);
-        next();
-    });
-};
-
-session.getMember = function (req, res, next) {
-    req.db.collection('members')
-        .find({openid: req.data.session.openid})
-        .next()
-        .then(doc => {
-            req.data.member = doc;
-            next();
-        })
-        .catch(log("getMember: "));
-};
-
-session.reply = function (req, res, next) {
-    res.json({sid: req.data.session.sid, msg: "session ok!"});
-};
 
 module.exports = session;
 

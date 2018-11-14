@@ -12,6 +12,15 @@ const session = require('../session.js');
 module.exports = function (express) {
 
     const router = express.Router();
+    router.use(session.init,
+        function (req, res, next) {
+            //session.config = {aaa: 123};
+            next();
+        },
+        function (req, res, next) {
+            console.log("session.config = ", req.data.s);
+            next();
+        });
     router.use(express.static('../public'));
     router.use(session.find);
     router.get('/', (req, res, next) => {
@@ -20,7 +29,7 @@ module.exports = function (express) {
     });
     router.get(
         '/login',
-        session.code2Session("learningEnglish"),
+        session.login,
         session.save,
         session.reply
     );
