@@ -1,3 +1,5 @@
+const learningEnglishRouter = require("./routes/learning-english.js");
+
 let createError = require('http-errors');
 let express = require('express');
 let path = require('path');
@@ -31,8 +33,6 @@ app.use(function (req, res, next) {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
-const learningEnglishRouter = require('./routes/learning-english.js');
 app.use(
     '/learning-english',
     initDb(config.learningEnglish.dbUrl),
