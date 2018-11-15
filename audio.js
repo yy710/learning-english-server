@@ -31,10 +31,6 @@ class Audio {
 
     evaluation(text) {
         return (req, res, next) => {
-            //debug
-            console.log("req.file: ", req.file);
-            console.log("req.body: ", req.body);
-
             this.audio2base64(req.file.path)
                 .then(data => {
                     return soe("Help A monster said Annie Yeah sure said Jack A real monster in Frog Creek Pennsylvania", base64);
