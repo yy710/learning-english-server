@@ -30,7 +30,7 @@ class Session {
     haveSession() {
         return (req, res, next) => {
             const s = req.data.session;
-            if (s && s.openid) next(); else res.json({msg: "usr not login!", code: 0});
+            if (s && s.openid) next(); else res.json({msg: "user not login!", code: 0});
         };
     }
 
@@ -82,7 +82,8 @@ class Session {
      */
     save() {
         return (req, res, next) => {
-            const data = req.data.session;
+            let data = req.data.session;
+            data.updateTime = Date.now();
             this.col.findOneAndReplace({openid: data.openid}, data, {upsert: true})
                 .then(r => next())
                 .catch(log("dataBase error: "));
@@ -152,7 +153,7 @@ function log(title) {
  */
 function createSid() {
     //req.session.sid = Date.now() + Math.round(Math.random() * 1000);
-    const buf = crypto.randomBytes(16);
+    const buf = crypto.randomBytes(8);
     return buf.toString('hex');
 }
 
