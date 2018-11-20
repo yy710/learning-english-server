@@ -4,6 +4,8 @@ const Session = require("../session.js");
 const session = new Session();
 const Audio = require('../audio.js');
 const audio = new Audio();
+const Sentence = require('../sentence');
+const sentence = new Sentence();
 
 module.exports = function (express) {
     const router = express.Router();
@@ -16,6 +18,11 @@ module.exports = function (express) {
     });
     router.get('/login', session.login(), session.save(), session.replySid());
     router.post('/upload', session.haveSession(), audio.upload(), audio.saveToFile());
+    router.get('/get-sentence', (req, res, next)=>{
+        let data = sentence.get();
+        //console.log("data: ", data);
+        res.json(data);
+    });
 
     return router;
 };
