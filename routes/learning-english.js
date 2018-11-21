@@ -19,9 +19,9 @@ module.exports = function (express) {
     router.get('/login', session.login(), session.save(), session.replySid());
     router.post('/upload', session.haveSession(), audio.upload(), audio.saveToFile());
     router.get('/get-sentence', (req, res, next)=>{
-        let data = sentence.get();
+        sentence.getLast().getTitle();
         //console.log("data: ", data);
-        res.json(data);
+        res.json(sentence.data);
     });
 
     return router;

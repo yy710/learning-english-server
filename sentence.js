@@ -1,21 +1,48 @@
 class Sentence {
-    constructor() {
+    constructor(db, colName = 'sentence') {
+        this.col = db.collection(colName);
         this.data = {
             id: 1,
-            title: "Dinosaurs Before Dark #01",
+            tag: ["Dinosaurs Before Dark"],
+            title: null,
             text: ["“Help! A monster!” said Annie.“Yeah, sure,” said Jack. “A real monster in Frog Creek, Pennsylvania.”"],
             audio: {
                 src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
                 startTime: 21,
                 endTime: 31.5
             },
-            image: "https://www.all2key.cn/learning-english/images/001.png"
+            image: "https://www.all2key.cn/learning-english/images/001.png",
+            lastId: 0,
+            nextId: 0
         }
     }
 
-    get() {
-        this.data.text[1] = punctuation(this.data.text[0]);
-        return this.data;
+    getTitle(){
+        this.data.title = this.data.tag[0] + ' #' + this.data.id;
+        return this;
+    }
+
+    getLast(tag) {
+        this.col.findOne({tag: tag, nextId: 0}).next().then(doc=>{
+            this.data = doc;
+            this.data.text[1] = punctuation(this.data.text[0]);
+            return this;
+        });
+    }
+
+    getNext(){
+        return this;
+    }
+
+    setNext(s){
+        this.data.nextId = s.data.id;
+        s.data.lastId = this.data.id;
+        this.save();
+        return s;
+    }
+
+    save(){
+        return this.col.insertOne(this.data).then(r=>this).catch(console.log);
     }
 }
 
