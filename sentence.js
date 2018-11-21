@@ -1,11 +1,11 @@
 class Sentence {
-    constructor(db, colName = 'sentence') {
-        this.col = db.collection(colName);
+    constructor() {
+        //this.col = db.collection(colName);
         this.data = {
             id: 1,
             tag: ["Dinosaurs Before Dark"],
             title: null,
-            text: ["“Help! A monster!” said Annie.“Yeah, sure,” said Jack. “A real monster in Frog Creek, Pennsylvania.”"],
+            text: ["“Help! A monster!” said Annie.“Yeah, sure,” said Jack. “A real monster in Frog Creek, <text style='color:red;'>Pennsylvania</text>.”"],
             audio: {
                 src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
                 startTime: 21,
@@ -23,11 +23,14 @@ class Sentence {
     }
 
     getLast(tag) {
+        return this;
+        /*
         this.col.findOne({tag: tag, nextId: 0}).next().then(doc=>{
             this.data = doc;
             this.data.text[1] = punctuation(this.data.text[0]);
             return this;
         });
+        */
     }
 
     getNext(){
@@ -42,7 +45,7 @@ class Sentence {
     }
 
     save(){
-        return this.col.insertOne(this.data).then(r=>this).catch(console.log);
+        //return this.col.insertOne(this.data).then(r=>this).catch(console.log);
     }
 }
 
