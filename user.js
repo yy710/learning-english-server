@@ -15,5 +15,6 @@ class User{
                 .catch(log("getMember: "));
         };
     }
-
 }
+
+module.exports = User;
