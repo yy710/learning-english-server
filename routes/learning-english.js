@@ -14,7 +14,8 @@ module.exports = function (express) {
     router.use(session.init('learningEnglish'));
     router.use(session.find());
     router.use(function (req, res, next) {
-        let user = new User(req.data.session);
+        const session = req.data.session;
+        let user = new User(session);
         req.data.user = user;
         next();
     });
@@ -26,7 +27,8 @@ module.exports = function (express) {
     router.get('/login', session.login(), session.save(), session.replySid());
     router.post('/upload', session.haveSession(), audio.upload(), audio.saveToFile());
     router.get('/get-sentence', (req, res, next) => {
-        let data = sentence.getTitle().getNext(3, 2);
+        const currentId = req.query.id;
+        let data = sentence.getTitle().getNear(currentId);
         //console.log("data: ", data);
         res.json(data);
     });
