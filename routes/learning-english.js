@@ -6,19 +6,14 @@ const Audio = require('../audio.js');
 const audio = new Audio();
 const Sentence = require('../sentence');
 const sentence = new Sentence();
-const User = require('../user.js');
+const user = require('../user.js');
 
 module.exports = function (express) {
     const router = express.Router();
     router.use(express.static('../public'));
     router.use(session.init('learningEnglish'));
     router.use(session.find());
-    router.use(function (req, res, next) {
-        const session = req.data.session;
-        let user = new User(session);
-        req.data.user = user;
-        next();
-    });
+    router.use(user.getUser());
 
     router.get('/', (req, res, next) => {
         res.json({msg: "request ok!"});
