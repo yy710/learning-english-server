@@ -268,7 +268,7 @@ class Sentence {
         return s;
     }
 
-    getNear(currentId, n1 = 1, n2 = 5) {
+    getNear(currentId = 9, n1 = 1, n2 = 5) {
         let start = currentId - n1 <= 0 ? 0 : currentId - n1;
         let s = data.slice(start, currentId + n2);
         return s;

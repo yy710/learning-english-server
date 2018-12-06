@@ -14,6 +14,10 @@ module.exports = function (express) {
     router.use(session.init('learningEnglish'));
     router.use(session.find());
     router.use(user.getUser());
+    router.use(function (req, res, next) {
+        console.log("req.data", req.data);
+        next();
+    });
 
     router.get('/', (req, res, next) => {
         res.json({msg: "request ok!"});

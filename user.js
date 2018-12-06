@@ -25,7 +25,9 @@ const user = {
     },
 
     newUser: function (session) {
-        return session;
+        let user = {};
+        user.openid = session.openid;
+        return user;
     },
 
     upsertToDb: function () {
@@ -38,5 +40,11 @@ const user = {
     }
 };
 
-
 module.exports = user;
+
+function log(title) {
+    return data => {
+        console.log(title, data);
+        return Promise.resolve(data);
+    };
+}
