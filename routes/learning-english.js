@@ -23,8 +23,11 @@ module.exports = function (express) {
         res.json({msg: "request ok!"});
         //res.render('learning-english', {title: '学英语的鱼'});
     });
+
     router.get('/login', session.login(), session.save(), session.replySid());
+
     router.post('/upload', session.haveSession(), audio.upload(), audio.saveToFile());
+
     router.get('/get-sentence', (req, res, next) => {
         const currentId = req.query.id;
         let data = sentence.getTitle().getNear(currentId);

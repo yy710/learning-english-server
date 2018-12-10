@@ -247,6 +247,7 @@ class Sentence {
     getTitle() {
         data.forEach(item => {
             item.title = item.tag[0] + ' #' + item.id;
+            item.text.push(punctuation(item.text[0]));
         });
         return this;
     }
