@@ -15,7 +15,7 @@ module.exports = function (express) {
     router.use(session.find());
     router.use(user.getUser());
     router.use(function (req, res, next) {
-        console.log("req.data", req.data);
+        //console.log("req.data", req.data);
         next();
     });
 
