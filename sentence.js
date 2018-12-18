@@ -270,10 +270,11 @@ class Sentence {
         return s;
     }
 
-    getNear(currentId = 9, n1 = 1, n2 = 5) {
-        let start = currentId - n1 <= 0 ? 0 : currentId - n1;
-        let s = data.slice(start, currentId + n2);
-        return s;
+    getNear(currentId = 0, n1 = 1, n2 = 5) {
+        let start = currentId - n1;
+        start = start < 0 ? 0 : start;
+        let end = start + n2;
+        return data.slice(start, end);
     }
 
     setNext(s) {
