@@ -30,7 +30,7 @@ module.exports = function (express) {
 
     router.get('/get-sentence', (req, res, next) => {
         const currentId = req.query.id;
-        let data = sentence.getTitle().getNear(currentId);
+        let data = { sentences: sentence.getTitle().getNear(currentId), lastIndex: 0};
         //console.log("data: ", data);
         res.json(data);
     });
