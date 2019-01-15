@@ -1,6 +1,6 @@
 const data = [
     {
-        id: 0,
+        id: 1,
         tag: ["Dinosaurs Before Dark"],
         title: null,
         text: ["“Help! A monster!” said Annie.“Yeah, sure,” said Jack. “A real monster in Frog Creek, Pennsylvania.”"],
@@ -14,7 +14,7 @@ const data = [
         nextId: 1
     },
     {
-        id: 1,
+        id: 2,
         tag: ["Dinosaurs Before Dark"],
         title: null,
         text: ["“Run,Jack!” said Annie, She ran up the road."],
@@ -24,11 +24,11 @@ const data = [
             endTime: 35
         },
         image: "https://www.all2key.cn/learning-english/images/001.png",
-        previousId: 0,
-        nextId: 2
+        previousId: 1,
+        nextId: 3
     },
     {
-        id: 2,
+        id: 3,
         tag: ["Dinosaurs Before Dark"],
         title: null,
         text: ["Oh, brother.This is what he got for spending time with his seven-year-old sister, Annie loved pretend stuff. But Jack was eight and a half. He liked real things."],
@@ -38,11 +38,11 @@ const data = [
             endTime: 45
         },
         image: "https://www.all2key.cn/learning-english/images/001.png",
-        previousId: 1,
-        nextId: 0
+        previousId: 2,
+        nextId: 4
     },
     {
-        id: 3,
+        id: 4,
         tag: ["Dinosaurs Before Dark"],
         title: null,
         text: ["“Watch out, Jack! The monster’s coming! Race you!” “No, thanks,” said Jack."],
@@ -52,11 +52,11 @@ const data = [
             endTime: 50
         },
         image: "https://www.all2key.cn/learning-english/images/001.png",
-        previousId: 2,
-        nextId: 4
+        previousId: 3,
+        nextId: 5
     },
     {
-        id: 4,
+        id: 5,
         tag: ["Dinosaurs Before Dark"],
         title: null,
         text: ["Annie raced alone into the woods. Jack looked at the sky. The sun was about to set."],
@@ -66,20 +66,6 @@ const data = [
             endTime: 55
         },
         image: "https://www.all2key.cn/learning-english/images/001.png",
-        previousId: 3,
-        nextId: 5
-    },
-    {
-        id: 5,
-        tag: ["Dinosaurs Before Dark"],
-        title: null,
-        text: ["“Come on, Annie! It’s time to go home!” But Annie had disappeared. Jack waited. No Annie."],
-        audio: {
-            src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
-            startTime: 55,
-            endTime: 60
-        },
-        image: "https://www.all2key.cn/learning-english/images/001.png",
         previousId: 4,
         nextId: 6
     },
@@ -87,7 +73,7 @@ const data = [
         id: 6,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["“Annie!” he shouted again. “Jack! Jack! Come here!” Jack groaned. “This better be good,” he said."],
+        text: ["“Come on, Annie! It’s time to go home!” But Annie had disappeared. Jack waited. No Annie."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -101,7 +87,7 @@ const data = [
         id: 7,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["Jack left the road and headed into the woods. The trees were lit with a golden late-afternoon light."],
+        text: ["“Annie!” he shouted again. “Jack! Jack! Come here!” Jack groaned. “This better be good,” he said."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -115,7 +101,7 @@ const data = [
         id: 8,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["“Come here!” called Annie. There she was. Standing under a tall oak tree. “Look,” she said. She was pointing at a rope ladder."],
+        text: ["Jack left the road and headed into the woods. The trees were lit with a golden late-afternoon light."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -129,7 +115,7 @@ const data = [
         id: 9,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["The longest rope ladder Jack had ever seen. “Wow,” he whispered. The ladder went all the way up to the top of the tree."],
+        text: ["“Come here!” called Annie. There she was. Standing under a tall oak tree. “Look,” she said. She was pointing at a rope ladder."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -143,7 +129,7 @@ const data = [
         id: 10,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["There—at the top—was a tree house. It was tucked between two branches. “That must be the highest tree house in the world,” said Annie."],
+        text: ["The longest rope ladder Jack had ever seen. “Wow,” he whispered. The ladder went all the way up to the top of the tree."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -157,7 +143,7 @@ const data = [
         id: 11,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["“Who built it?” asked Jack. “I’ve never seen it before.” “I don’t know. But I’m going up,” said Annie. “No. We don’t know who it belongs to,” said Jack."],
+        text: ["There—at the top—was a tree house. It was tucked between two branches. “That must be the highest tree house in the world,” said Annie."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -171,7 +157,7 @@ const data = [
         id: 12,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["“Just for a teeny minute,” said Annie. She started up the ladder. “Annie, “come back!” She kept climbing."],
+        text: ["“Who built it?” asked Jack. “I’ve never seen it before.” “I don’t know. But I’m going up,” said Annie. “No. We don’t know who it belongs to,” said Jack."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -185,7 +171,7 @@ const data = [
         id: 13,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["Jack sighed. “Annie, it’s almost dark. We have to go home.” Annie disappeared inside the tree house."],
+        text: ["“Just for a teeny minute,” said Annie. She started up the ladder. “Annie, “come back!” She kept climbing."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -199,7 +185,7 @@ const data = [
         id: 14,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["“An-nie!” Jack waited a moment. He was about to call again when Annie poked her head out of the tree house window."],
+        text: ["Jack sighed. “Annie, it’s almost dark. We have to go home.” Annie disappeared inside the tree house."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -213,7 +199,7 @@ const data = [
         id: 15,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["“Books!” she shouted. “What?” “It’s filled with books!” Oh, man! Jack loved books."],
+        text: ["“An-nie!” Jack waited a moment. He was about to call again when Annie poked her head out of the tree house window."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -227,7 +213,7 @@ const data = [
         id: 16,
         tag: ["Dinosaurs Before Dark"],
         title: null,
-        text: ["He pushed his glasses into place. He gripped the sides of the rope ladder, and up he went."],
+        text: ["“Books!” she shouted. “What?” “It’s filled with books!” Oh, man! Jack loved books."],
         audio: {
             src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
             startTime: 55,
@@ -235,6 +221,20 @@ const data = [
         },
         image: "https://www.all2key.cn/learning-english/images/001.png",
         previousId: 15,
+        nextId: 17
+    },
+    {
+        id: 17,
+        tag: ["Dinosaurs Before Dark"],
+        title: null,
+        text: ["He pushed his glasses into place. He gripped the sides of the rope ladder, and up he went."],
+        audio: {
+            src: "https://www.all2key.cn/learning-english/audio/01intoWoods.mp3",
+            startTime: 55,
+            endTime: 60
+        },
+        image: "https://www.all2key.cn/learning-english/images/001.png",
+        previousId: 16,
         nextId: 0
     }
 ];
@@ -275,6 +275,10 @@ class Sentence {
         start = start < 0 ? 0 : start;
         let end = start + n2;
         return data.slice(start, end);
+    }
+
+    getLatest(){
+        return data[3];
     }
 
     setNext(s) {

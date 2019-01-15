@@ -29,8 +29,8 @@ module.exports = function (express) {
     router.post('/upload', session.haveSession(), audio.upload(), audio.saveToFile());
 
     router.get('/get-sentence', (req, res, next) => {
-        const currentId = req.query.id;
-        let data = { sentences: sentence.getTitle().getNear(currentId), lastIndex: 0};
+        const action = req.query.action;
+        let data = { sentence: sentence.getTitle().getLatest(), next: false };
         //console.log("data: ", data);
         res.json(data);
     });
