@@ -254,7 +254,8 @@ class Sentence {
     }
 
     getPrevious(currentId, num) {
-        let s = data.slice(currentId - num + 1, currentId + 1);
+        //let s = data.slice(currentId - num + 1, currentId + 1);
+        let s = data[2];
         return s;
         /*
         this.col.findOne({tag: tag, nextId: 0}).next().then(doc=>{
@@ -266,7 +267,8 @@ class Sentence {
     }
 
     getNext(currentId, num) {
-        let s = data.slice(currentId + 1, currentId + num + 1);
+        //let s = data.slice(currentId + 1, currentId + num + 1);
+        let s = data[4];
         return s;
     }
 

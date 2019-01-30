@@ -28,10 +28,23 @@ module.exports = function (express) {
 
     router.post('/upload', session.haveSession(), audio.upload(), audio.saveToFile());
 
-    router.get('/get-sentence', (req, res, next) => {
-        const action = req.query.action;
+    router.get('/get-latest-sentence', (req, res, next) => {
         let data = { sentence: sentence.getTitle().getLatest(), next: false };
         //console.log("data: ", data);
+        res.json(data);
+    });
+
+    router.get('/get-previous-sentence', (req, res, next) => {
+        const id = req.query.id;
+        let data = { sentence: sentence.getTitle().getPrevious(id, 1), next: true };
+        console.log("id: ", id);
+        res.json(data);
+    });
+
+    router.get('/get-next-sentence', (req, res, next) => {
+        const id = req.query.id;
+        let data = { sentence: sentence.getTitle().getNext(id,1), next: false };
+        console.log("id: ", id);
         res.json(data);
     });
 
