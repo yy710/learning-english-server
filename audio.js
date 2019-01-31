@@ -48,7 +48,7 @@ class Audio {
             this.audio2base64(req.file.path).then(data => {
                 fs.writeFile(req.file.destination + 'voice.txt', data, err => {
                     if (err) throw err;
-                    res.json({msg: 'upload ok!', code: 1});
+                    res.json({msg: 'upload ok!', code: 1, rate: [["The", 95], ["said", 30], ["Jack", 70]], next: true});
                 });
             });
         };

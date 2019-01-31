@@ -280,7 +280,7 @@ class Sentence {
     }
 
     getLatest(){
-        return data[3];
+        return data[0];
     }
 
     setNext(s) {
