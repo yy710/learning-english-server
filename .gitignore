@@ -1,3 +1,5 @@
 node_modules/
 ssl/
 .idea/
+.DS_Store
+./public/.DS_store
