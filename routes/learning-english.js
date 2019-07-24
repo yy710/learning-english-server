@@ -29,22 +29,32 @@ module.exports = function (express) {
     router.post('/upload', session.haveSession(), audio.upload(), audio.saveToFile());
 
     router.get('/get-latest-sentence', (req, res, next) => {
-        let data = { sentence: sentence.getTitle().getLatest(), next: false, previous: true };
-        //console.log("data: ", data);
+        const id = 0;
+        let s = sentence.getTitle().getLatest();
+        let data = { sentence: s, next: !!s.nextId, previous: !!s.previousId };
+        console.log("id: ", id);
         res.json(data);
     });
 
     router.get('/get-previous-sentence', (req, res, next) => {
         const id = req.query.id;
-        let data = { sentence: sentence.getTitle().getPrevious(id, 1), next: true, previous: true };
-        console.log("id: ", id);
+        //debug
+        console.log("req id = ", id);
+        let s = sentence.getTitle().getPrevious(id);
+        //debug
+        console.log("get id = ", s.id);
+        let data = { sentence: s, next: !!s.nextId, previous: !!s.previousId };
         res.json(data);
     });
 
     router.get('/get-next-sentence', (req, res, next) => {
         const id = req.query.id;
-        let data = { sentence: sentence.getTitle().getNext(id,1), next: false, previous: true };
-        console.log("id: ", id);
+        //debug
+        console.log("req id = ", id);
+        let s = sentence.getTitle().getNext(id);
+        //debug
+        console.log("get id = ", s.id);
+        let data = { sentence: s, next: !!s.nextId, previous: !!s.previousId };
         res.json(data);
     });
 

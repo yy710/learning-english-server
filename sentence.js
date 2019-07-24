@@ -1,4 +1,4 @@
-const data = [
+const data1 = [
     {
         id: 1,
         tag: ["Dinosaurs Before Dark"],
@@ -242,21 +242,92 @@ const data = [
 class Sentence {
     constructor() {
         //this.col = db.collection(colName);
+        this.data = [
+            {
+                id: 1,
+                tag: ["Shrek"],
+                title: null,
+                text: ["Once upon a time there was a lovely princess. But she had an enchantment upon her of a fearful sort..."],
+                audio: {
+                    src: "https://www.all2key.cn/learning-english/audio/shrek01.mp3",
+                    startTime: 0,
+                    endTime: 8.691
+                },
+                image: "https://www.all2key.cn/learning-english/images/shrek1.jpeg",
+                previousId: 0,
+                nextId: 2
+            },
+            {
+                id: 2,
+                tag: ["Shrek"],
+                title: null,
+                text: ["which could only be broken by love's first kiss.She was locked away in a castle...guarded by a terrible fire-breathing dragon."],
+                audio: {
+                    src: "https://www.all2key.cn/learning-english/audio/shrek01.mp3",
+                    startTime: 8.691,
+                    endTime: 19.931
+                },
+                image: "https://www.all2key.cn/learning-english/images/shrek1.jpeg",
+                previousId: 1,
+                nextId: 3
+            },
+            {
+                id: 3,
+                tag: ["Shrek"],
+                title: null,
+                text: ["Many brave knights had attempted to free her from this dreadful prison.but none prevailed."],
+                audio: {
+                    src: "https://www.all2key.cn/learning-english/audio/shrek01.mp3",
+                    startTime: 19.931,
+                    endTime: 27.127
+                },
+                image: "https://www.all2key.cn/learning-english/images/shrek1.jpeg",
+                previousId: 2,
+                nextId: 4
+            },
+            {
+                id: 4,
+                tag: ["Shrek"],
+                title: null,
+                text: ["She waited in the dragon's keep in the highest room of the tallest tower for her true love and true love's first kiss."],
+                audio: {
+                    src: "https://www.all2key.cn/learning-english/audio/shrek01.mp3",
+                    startTime: 27.127,
+                    endTime: 37.421
+                },
+                image: "https://www.all2key.cn/learning-english/images/shrek1.jpeg",
+                previousId: 3,
+                nextId: 5
+            },
+            {
+                id: 5,
+                tag: ["Shrek"],
+                title: null,
+                text: ["Like that's ever gonna happen"],
+                audio: {
+                    src: "https://www.all2key.cn/learning-english/audio/shrek01.mp3",
+                    startTime: 38.839,
+                    endTime: 41.529
+                },
+                image: "https://www.all2key.cn/learning-english/images/shrek1.jpeg",
+                previousId: 4,
+                nextId: 0
+            }
+        ];
     }
 
     getTitle() {
-        data.forEach(item => {
+        this.data.forEach(item => {
             item.title = item.tag[0] + ' #' + item.id;
-            item.text[1] = punctuation(item.text[0]
-            );
+            item.text[1] = punctuation(item.text[0]);
         });
         return this;
     }
 
     getPrevious(currentId, num) {
         //let s = data.slice(currentId - num + 1, currentId + 1);
-        let s = data[2];
-        return s;
+        const id = this.getFromId(currentId).previousId;
+        return this.getFromId(id);
         /*
         this.col.findOne({tag: tag, nextId: 0}).next().then(doc=>{
             this.data = doc;
@@ -266,10 +337,18 @@ class Sentence {
         */
     }
 
-    getNext(currentId, num) {
+    getFromId(id) {
+        for (let i = 0; i < this.data.length; i++) {
+            //debug
+            //console.log("for i = ", i);
+            if (this.data[i].id == id) return this.data[i];
+        }
+    }
+
+    getNext(currentId) {
         //let s = data.slice(currentId + 1, currentId + num + 1);
-        let s = data[4];
-        return s;
+        const id = this.getFromId(currentId).nextId;
+        return this.getFromId(id);
     }
 
     getNear(currentId = 0, n1 = 1, n2 = 5) {
@@ -279,8 +358,8 @@ class Sentence {
         return data.slice(start, end);
     }
 
-    getLatest(){
-        return data[0];
+    getLatest() {
+        return this.data[0];
     }
 
     setNext(s) {
