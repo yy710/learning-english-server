@@ -29,15 +29,39 @@ class Audio {
         });
     }
 
-    evaluation(text) {
+    evaluation2(text) {
         return (req, res, next) => {
             this.audio2base64(req.file.path)
                 .then(data => {
-                    return soe("Help A monster said Annie Yeah sure said Jack A real monster in Frog Creek Pennsylvania", base64);
+                    return soe(text, data);
                 })
+                //.then(log("soe return: "))
+                .then(this.words2rate)
+                .then(log("resData: "))
                 .then(data => res.json(data))
                 .catch(log("catch soe error: "));
         };
+    }
+
+    words2rate(data = {}) {
+        if (!data) return Promise.reject();
+        const rate = data.Words.map(function (item) {
+            return [item.Word, item.PronAccuracy];
+        });
+        const resData = {
+            msg: 'upload ok!',
+            code: 1,
+            pronAccuracy: data.PronAccuracy,
+            pronFluency: data.PronFluency,
+            pronCompletion: data.PronCompletion,
+            rate: rate,
+            next: data.PronAccuracy > 79 && data.PronFluency > 0.69 && data.PronCompletion > 0.89
+        };
+        return Promise.resolve(resData);
+    }
+
+    reply(data){
+
     }
 
     /**
@@ -48,7 +72,12 @@ class Audio {
             this.audio2base64(req.file.path).then(data => {
                 fs.writeFile(req.file.destination + 'voice.txt', data, err => {
                     if (err) throw err;
-                    res.json({msg: 'upload ok!', code: 1, rate: [["The", 95], ["said", 30], ["Jack", 70]], next: true});
+                    res.json({
+                        msg: 'upload ok!',
+                        code: 1,
+                        rate: [["Once", 95], ["time", 30], ["sort", 70]],
+                        next: true
+                    });
                 });
             });
         };
@@ -61,7 +90,7 @@ module.exports = Audio;
 
 function log(msg) {
     return function (data) {
-        console.log(msg, data);
+        console.log(msg, JSON.stringify(data, null, 4));
         return Promise.resolve(data);
     };
 }

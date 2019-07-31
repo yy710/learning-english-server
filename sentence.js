@@ -267,7 +267,7 @@ class Sentence {
                     startTime: 8.691,
                     endTime: 19.931
                 },
-                image: "https://www.all2key.cn/learning-english/images/shrek1.jpeg",
+                image: "https://www.all2key.cn/learning-english/images/shrek2.jpeg",
                 previousId: 1,
                 nextId: 3
             },
@@ -307,7 +307,7 @@ class Sentence {
                 audio: {
                     src: "https://www.all2key.cn/learning-english/audio/shrek01.mp3",
                     startTime: 38.839,
-                    endTime: 41.529
+                    endTime: 41.329
                 },
                 image: "https://www.all2key.cn/learning-english/images/shrek1.jpeg",
                 previousId: 4,

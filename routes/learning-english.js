@@ -26,12 +26,17 @@ module.exports = function (express) {
 
     router.get('/login', session.login(), session.save(), session.replySid());
 
-    router.post('/upload', session.haveSession(), audio.upload(), audio.saveToFile());
+    router.post('/upload',
+        session.haveSession(),
+        audio.upload(),
+        audio.evaluation2("Once upon a time there was a lovely princess But she had an enchantment upon her of a fearful sort"),
+        audio.saveToFile()
+        );
 
     router.get('/get-latest-sentence', (req, res, next) => {
         const id = 0;
         let s = sentence.getTitle().getLatest();
-        let data = { sentence: s, next: !!s.nextId, previous: !!s.previousId };
+        let data = {sentence: s, next: !!s.nextId, previous: !!s.previousId};
         console.log("id: ", id);
         res.json(data);
     });
@@ -43,7 +48,7 @@ module.exports = function (express) {
         let s = sentence.getTitle().getPrevious(id);
         //debug
         console.log("get id = ", s.id);
-        let data = { sentence: s, next: !!s.nextId, previous: !!s.previousId };
+        let data = {sentence: s, next: !!s.nextId, previous: !!s.previousId};
         res.json(data);
     });
 
@@ -54,7 +59,7 @@ module.exports = function (express) {
         let s = sentence.getTitle().getNext(id);
         //debug
         console.log("get id = ", s.id);
-        let data = { sentence: s, next: !!s.nextId, previous: !!s.previousId };
+        let data = {sentence: s, next: !!s.nextId, previous: !!s.previousId};
         res.json(data);
     });
 

@@ -14,6 +14,7 @@ const HttpProfile = tencentcloud.common.HttpProfile;
 // 实例化一个认证对象，入参需要传入腾讯云账户secretId，secretKey
 const credData = require("./ssl/config.js").soe;
 let cred = new Credential(credData[0], credData[1]);
+const uuid = require('uuid');
 
 // 实例化一个http选项，可选的，没有特殊需求可以跳过。
 let httpProfile = new HttpProfile();
@@ -34,14 +35,42 @@ let soe = function (refText, base64Data) {
         // 实例化一个发音评估初始化接口请求对象,并填充参数
         let reqInit = new models.InitOralProcessRequest();
         // create random sessionId
-        const sessionId = "stress_test_" + Math.round(Math.random() * 1000000);
-        console.log("sessionId: ", sessionId);
+        //const sessionId = "shrek_" + Math.round(Math.random() * 1000000);
+        const sessionId = uuid.v1();
+        console.log("soe sessionId: ", sessionId);
+        //console.log("refText: ", refText);
+        //console.log("base64Data: ", base64Data);
 
         reqInit.SessionId = sessionId; //语音段唯一标识，一段语音一个SessionId
-        reqInit.RefText = refText; //被评估语音对应的文本
-        reqInit.WorkMode = 1; //语音输入模式，0流式分片，1非流式一次性评估
-        reqInit.EvalMode = 1; //评估模式，0:词模式, 1:句子模式，当为词模式评估时，能够提供每个音节的评估信息，当为句子模式时，能够提供完整度和流利度信息。
-        reqInit.ScoreCoeff = 3.5; //评价苛刻指数，取值为[1.0 - 4.0]范围内的浮点数，用于平滑不同年龄段的分数，1.0为小年龄段，4.0为最高年龄段
+
+        /**
+         * 被评估语音对应的文本，句子模式下不超过个 20 单词或者中文文字，
+         * 段落模式不超过 120 单词或者中文文字，
+         * 中文评估使用 utf-8 编码，自由说模式该值传空。
+         * 如需要在单词模式和句子模式下使用自定义音素，可以通过设置 TextMode 使用音素标注。
+         */
+        reqInit.RefText = refText;
+
+        /**
+         * 语音输入模式，0：流式分片，1：非流式一次性评估
+         * @type {number}
+         */
+        reqInit.WorkMode = 1;
+
+        /**
+         * 评估模式，0：词模式（中文评测模式下为文字模式），1：句子模式，2：段落模式，3：自由说模式，
+         * 当为词模式评估时，能够提供每个音节的评估信息，当为句子模式时，能够提供完整度和流利度信息。
+         * @type {number}
+         */
+        reqInit.EvalMode = 1;
+
+        /**
+         * 评价苛刻指数，取值为[1.0 - 4.0]范围内的浮点数，
+         * 用于平滑不同年龄段的分数，1.0为小年龄段，4.0为最高年龄段
+         * @type {number}
+         */
+        reqInit.ScoreCoeff = 3.5;
+
         //String 业务应用ID，与账号应用APPID无关，是用来方便客户管理服务的参数，需要结合控制台使用
         //reqInit.SoeAppId =
         //integer 长效session标识，当该参数为1时，session的持续时间为300s，但会一定程度上影响第一个数据包的返回速度，且TransmitOralProcess必须同时为1才可生效
@@ -75,7 +104,7 @@ let soe = function (refText, base64Data) {
                 }
                 // 请求正常返回，打印response对象
                 //console.log("TransmitOralProcess: ", JSON.stringify(response, null, 4));
-                console.log("TransmitOralProcess: ", response);
+                //console.log("TransmitOralProcess: ", response);
                 resolve(response);
             });
         });
