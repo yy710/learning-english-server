@@ -29,9 +29,17 @@ module.exports = function (express) {
     router.post('/upload',
         session.haveSession(),
         audio.upload(),
-        audio.evaluation2("Once upon a time there was a lovely princess But she had an enchantment upon her of a fearful sort"),
-        audio.saveToFile()
-        );
+        (req, res, next) => {
+            //console.log("req.body: ", req.body);
+            let refText = sentence.getFromId(req.body.sentenceId).text;
+            req.data.refText = punctuation(refText[0]);
+            //console.log("req.data: ", req.data);
+            next();
+        },
+        audio.evaluation2(),
+        audio.saveToDb(),
+        audio.reply()
+    );
 
     router.get('/get-latest-sentence', (req, res, next) => {
         const id = 0;
@@ -71,4 +79,10 @@ function log(msg) {
         console.log(msg, data);
         return Promise.resolve(data);
     };
+}
+
+function punctuation(str) {
+    return str.replace(/[\ |\~|\“|\”|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g, " ")//替换所有标点为空格
+        .replace(/\s+/g, ' ')//合并多个空格
+        .trim();//去除头尾空格
 }

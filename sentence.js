@@ -343,6 +343,7 @@ class Sentence {
             //console.log("for i = ", i);
             if (this.data[i].id == id) return this.data[i];
         }
+        return [];
     }
 
     getNext(currentId) {

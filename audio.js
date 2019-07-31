@@ -29,16 +29,26 @@ class Audio {
         });
     }
 
-    evaluation2(text) {
+    /**
+     * 语音评测，输出正则化数据
+     * req.data.resData
+     * @returns {Function}
+     */
+    evaluation2() {
         return (req, res, next) => {
             this.audio2base64(req.file.path)
                 .then(data => {
-                    return soe(text, data);
+                    req.data.voiceData = data;
+                    return soe(req.data.refText, data);
                 })
                 //.then(log("soe return: "))
+                .then(data => req.data.soe = data)
                 .then(this.words2rate)
-                .then(log("resData: "))
-                .then(data => res.json(data))
+                //.then(log("resData: "))
+                .then(resData => {
+                    req.data.resData = resData;
+                    next();
+                })
                 .catch(log("catch soe error: "));
         };
     }
@@ -60,8 +70,25 @@ class Audio {
         return Promise.resolve(resData);
     }
 
-    reply(data){
+    reply() {
+        return (req, res, next) => {
+            res.json(req.data.resData);
+            //delete req.data.voiceData;
+        };
+    }
 
+    saveToDb() {
+        return (req, res, next) => {
+            const doc = {
+                openId: req.data.user.openid,
+                sentenceId: req.body.sentenceId,
+                voiceData: req.data.voiceData,
+                evaluation: req.data.soe
+            };
+            console.log("doc saveToDb: ", JSON.stringify(doc, null, 4));
+            //req.data.doc = doc;
+            next();
+        };
     }
 
     /**
